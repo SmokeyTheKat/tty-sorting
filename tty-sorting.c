@@ -105,12 +105,13 @@ void combsort(int* array, int len)
 {
 	static const float shrink = 1.3;
 	float fgap = len;
+	int gap = (int)fgap;
 	bool swaped = true;
-	while (swaped)
+	while (!(swaped && gap == 1))
 	{
 		swaped = false;
 		fgap /= shrink;
-		int gap = (int)fgap;
+		gap = (int)fgap;
 		if (gap < 1) gap = 1;
 		for (int i = 0; i < len - gap; i++)
 		{
@@ -152,6 +153,38 @@ void gnomesort(int* array, int len)
 		else draw_array(array, len, pos, pos);
 	}
 }
+void bdbublesort(int* array, int len)
+{
+	bool swaped = true;
+	while (swaped == true)
+	{
+		for (int i = 1; i < len; i++)
+		{
+			usleep(delay);
+			draw_array(array, len, i, i-1);
+			if (array[i-1] > array[i])
+			{
+				swap(&(array[i-1]), &(array[i]));
+				swaped = true;
+			}
+			usleep(delay);
+			draw_array(array, len, i, i-1);
+		}
+		swaped = false;
+		for (int i = len-1; i >= 1; i--)
+		{
+			usleep(delay);
+			draw_array(array, len, i, i-1);
+			if (array[i-1] > array[i])
+			{
+				swap(&(array[i-1]), &(array[i]));
+				swaped = true;
+			}
+			usleep(delay);
+			draw_array(array, len, i, i-1);
+		}
+	}
+}
 void bublesort(int* array, int len)
 {
 	bool swaped = true;
@@ -177,31 +210,37 @@ int main(void)
 {
 	srand(time(null));
 	cur_clear();
-	int array[60];
+	int array[50];
 	
-	for (int i = 0; i < 60; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		array[i] = 1 + (rand() % 19);
 	}
-	bublesort(array, 60);
+	bdbublesort(array, 50);
 
-	for (int i = 0; i < 60; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		array[i] = 1 + (rand() % 19);
 	}
-	combsort(array, 60);
+	bublesort(array, 50);
 
-	for (int i = 0; i < 60; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		array[i] = 1 + (rand() % 19);
 	}
-	gnomesort(array, 60);
+	combsort(array, 50);
 
-	for (int i = 0; i < 60; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		array[i] = 1 + (rand() % 19);
 	}
-	spaghettisort(array, 60);
+	gnomesort(array, 50);
+
+	for (int i = 0; i < 50; i++)
+	{
+		array[i] = 1 + (rand() % 19);
+	}
+	spaghettisort(array, 50);
 
 	cur_reset();
 	return 0;
